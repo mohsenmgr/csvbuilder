@@ -1,0 +1,33 @@
+Codice Stabilimento
+Descrizione Stabilimento
+Edificio
+Vettore
+POD
+Piano
+Reparto	Quadro
+Descrizione Quadro
+Sottoquadro
+Descrizione Sottoquadro
+Linea
+Descrizione Linea
+Area Funzionale ENEA
+Cod. Funzionale TERA
+Tipologia Dispositivo
+Codice Modello Dispositivo
+Taglia Interruttore	
+Tipologia Misura	
+Hostname Edge
+ID Modbus	
+Tipo Dispositivo	
+mqtt-topic	
+modbus-id	
+group	
+ime-type
+modbus-fc	
+modbus-address	
+regAddressHex	
+modbus-format	
+Misura	
+Unita di misura	
+modbus-n_registers	
+mqtt-qos
