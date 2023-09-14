@@ -16,5 +16,6 @@ in case you choose Manual make sure you modify `columns_custom.txt` file. This f
 You can find the final csv outputs for each edge device inside the output directory. 
 
 # Requirements
-
-`pip install openpyxl pandas`
+[X] Python 3.9
+`pip install "typer[all]"`
+`pip install openpyxl pandas rich`

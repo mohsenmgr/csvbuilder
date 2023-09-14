@@ -20,8 +20,8 @@ def convert_df_to_json(excel_dataframe_df):
     return json_str
 
 
-def get_excel_dataframe(excel_file, sheet_name):
-    dataFrame = pd.read_excel(excel_file, sheet_name=sheet_name)
+def get_excel_dataframe(excel_file, sheet):
+    dataFrame = pd.read_excel(excel_file, sheet_name=sheet)
     return dataFrame
    
 # changes the order of items in data according to the given output_columns

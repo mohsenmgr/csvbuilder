@@ -1,11 +1,59 @@
+from io import StringIO
+from typing import Annotated
 import pandas as pd
 import json
 from measure_filler import Populator
 from utils_cls import MyUtils
 from merger import *
+import typer
+from typing_extensions import Annotated
+
 
 utils = MyUtils("./")
 excel_file_global = ''
+app = typer.Typer(rich_markup_mode="rich")
+
+
+@app.command(epilog="Made with 🍆 by [blue]MOSS[/blue]")
+def auto(excelfile: Annotated[str, typer.Argument(help="Excel file name .xlsx")]):
+    """
+    Combine excel sheets together
+    """
+
+    if not excelfile.endswith(".xlsx"):
+        excelfile = excelfile + ".xlsx"
+
+    if not utils.checkIfFileExistsInPath(excelfile):
+        print(f"file {excelfile} does not exist!")
+        raise OSError("File does not exist")
+    
+    processor(False,excelfile,0,1,None)
+
+
+@app.command(epilog="Made with 🍆 by [blue]MOSS[/blue]")
+def manual(excelfile: Annotated[str, typer.Argument(help="Excel file name .xlsx")], 
+           columnsfile: Annotated[str, typer.Argument(help="File containing column names .txt",
+                                                       rich_help_panel="Secondary Arguments")] = 'columns_custom.txt'):
+    """
+    Combine excel sheets, only select specified columns
+    """
+
+    if not excelfile.endswith(".xlsx"):
+        excelfile = excelfile + ".xlsx"
+
+    if not columnsfile.endswith(".txt"):
+        columnsfile = columnsfile + ".txt"
+
+    if not utils.checkIfFileExistsInPath(excelfile):
+        print(f"file {columnsfile} does not exist!")
+        raise OSError("File does not exist")
+    
+    if not utils.checkIfFileExistsInPath(columnsfile):
+        print(f"file {columnsfile} does not exist!")
+        raise OSError("File does not exist")
+    
+    processor(True,excelfile,0,1,columnsfile)
+
 
 def get_device_appendix_data(columns,device):
         device_sheet_name = device[0]
@@ -37,7 +85,7 @@ def processor(mode,excel_file,sheet_1,sheet_2,custom_columns_file):
 
 
     if mode:
-        print(f"Tables file name = {custom_columns_file}.txt")
+        print(f"Tables file name = {custom_columns_file}")
         populator = Populator(custom_columns_file)
         column_names = populator.getMeasures()
        
@@ -58,73 +106,14 @@ def processor(mode,excel_file,sheet_1,sheet_2,custom_columns_file):
 
         output_file_name = f"./output/{device[0]}.csv"
         jsonString = json.dumps(device_csv_output)
-        df = pd.read_json(jsonString)
+        strObject = StringIO(jsonString)
+
+        df = pd.read_json(strObject)
         df.to_csv(output_file_name,sep=';', encoding='utf-8', index=False)
         print(f"CSV file {output_file_name} produced successfully!")
 
     print("CSV processor finished")
 
 
-while True:
-    user_input = input("Enter excel file name .xlsx (or 'quit' to exit): ")
-    
-    if user_input.lower() == 'quit':
-        print("Exiting the program.")
-        break
-    else:
-        excel_file = user_input if user_input !='' else 'Sachim09062023'
-        excel_file = excel_file + '.xlsx'
-        print(f"Excel file = {excel_file}")
-
-        if not utils.checkIfFileExistsInPath(excel_file):
-            print(f"file {excel_file} does not exist!")
-            raise OSError("File does not exist")
-        
-        excel_file_global = excel_file
-        
-        user_input = input("Enter Plant Sheet name [default Plant] (or 'quit' to exit): ")
-        if user_input.lower() == 'quit':
-            print("Exiting the program.")
-            break
-        else:
-            plant_sheet = user_input if user_input !='' else 'Plant'
-
-
-        user_input = input("Enter Modbus Sheet name [default Modbus] (or 'quit' to exit): ")
-        if user_input.lower() == 'quit':
-            print("Exiting the program.")
-            break
-        else:
-            modbus_sheet = user_input if user_input !='' else 'Modbus'
-
-
-        print(f"\n There are two modes for processing excel file: \n")
-        print(f" auto   (A) Automatic mode combines the column headers from first sheet and second sheet together in the result csv")
-        print(f" manual (M) Manual mode only selects specified column headers from the first and second sheet and combines them together \n")
-        user_input = input("Enter (A) for automatic or (M) for manual [default Automatic] (or 'quit' to exit):")
-        if user_input.lower() == 'quit':
-          print("Exiting the program.")
-          break
-        elif user_input.lower() == 'a' or user_input.lower() == '':
-            print("Auto mode selected")
-            processor(False,excel_file,plant_sheet,modbus_sheet,None)
-        else:
-            print("Manual mode selected")
-            user_input = input("Enter manual columns file name .txt (or 'quit' to exit): ")
-            columns_file = user_input if user_input !='' else 'columns_custom'
-            columns_file = f"{columns_file}.txt"
-
-            if not utils.checkIfFileExistsInPath(columns_file):
-                print(f"file {columns_file} does not exist!")
-                raise OSError("File does not exist")
-            
-            processor(True,excel_file,plant_sheet,modbus_sheet,columns_file)
-
-
-            
-
-        
-
-   
-
-
+if __name__ == "__main__":
+    app()
