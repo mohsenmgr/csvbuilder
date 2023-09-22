@@ -9,7 +9,11 @@ In addition, some quality of life functionality was added such as separation of 
 
 Prepare an excel file with at least two sheets, one for plant data and another for modbus data.
 create an `output` directory if it does not exist.
-Run `python main.py` inside the project folder.
+Run `python app.py` inside the project folder.
+Necessary args are shown by using the `python app.py --help` command.
+Use auto mode in conjuction with default excel file to quickly produce csv sheets.
+Or use manual mode and customize the input by providing a unique column name and desired output columns.
+
 Follow the prompt step by step and choose between Automatic mode or Manual mode.
 in case you choose Manual make sure you modify `columns_custom.txt` file. This file determines the output of csv files, so you can choose the columns which should exist inside the csv file and the program checks validity of columns. In case a column does not exist in your excel file the program raise an error.
 
