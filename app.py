@@ -1,4 +1,3 @@
-from typing import Annotated
 from measure_filler import Populator
 from utils_cls import MyUtils
 import typer

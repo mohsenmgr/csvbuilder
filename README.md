@@ -1,4 +1,4 @@
-# CSV Builder
+\# CSV Builder
 
 CSV Builder is a tool which makes creation of csv files from excel sheets easier. The main functionality of this tool is marging two sheets, such that every row from the first sheet is repeated for all rows in the second sheet. The usecase for this logic is when plant data exists on the first sheet (with each row representing a line) and we want to collect all modbus registers (second sheet) for each line.
 
@@ -19,7 +19,15 @@ in case you choose Manual make sure you modify `columns_custom.txt` file. This f
 
 You can find the final csv outputs for each edge device inside the output directory. 
 
+## Manual mode
+In Manual mode you can specify the name of desired columns in a .txt format, the program writes only those inside the resulting excel file.
+You need to specify a unique column name which will act as your output identifier, in this case `Hostname Edge` as an example.
+`python app.py manual sample.xlsx columns_custom.txt "Hostname Edge"`
+
+
 # Requirements
-[X] Python 3.9
+[x] Python 3.9
+`mkdir output`
 `pip install "typer[all]"`
 `pip install openpyxl pandas rich`
+`pip install typing`
